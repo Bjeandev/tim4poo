@@ -5,189 +5,140 @@ using namespace std;
 
 class Proveedor{
 	private://atributos
-		string a;
+			/*Profe, aqui utilizo la palabra que ingresa el usuario como base para todo el codigo,
+			ya que primero debe seleccionar la opcion que necesite y luego llamo a la funcion la cual
+			se ejecuta con la palabra ingresada buscando el nro de pedido, el codigo de producto o la fecha*/
+		string buscar;
 	public://metodos
 		Proveedor(string);//constructor
-		string validarPedido();//metodo 1
-		string validarProducto();//metodo 2
-		string validarFecha();//metodo 3
+		/*aqui los inicialice como integer porque dan el resultado a la busqueda mediante los cout,
+		pero no podia dejar sin return la funcion o podia hacerlo void pero pense que asi seria una buena idea*/
+		int validarPedido();//metodo 1
+		int validarProducto();//metodo 2
+		int validarFecha();//metodo 3
 };
-
-Proveedor::Proveedor(string _a){
-	a = _a;	
+//creo mi constructor
+Proveedor::Proveedor(string _buscar){
+	buscar = _buscar;	
 }
-
 //metodo 1
-string Proveedor::validarPedido(){
-	string line;
-	ifstream indata("proveedores.txt");
-	while (getline(indata, line)) {
+/*mi metodo es sencillo, abro el archivo mediante el ifstream, luego con un while y getline recorro linea a linea
+el documento buscando con un if la coincidencia con el atributo previamente ingresado por consola (mi variable buscar),
+una vez encontrada extraigo todos los datos necesarios en base a su posicion en la linea y tambien agregue los "/" a la fecha*/
+int Proveedor::validarPedido(){
+	string linea;
+	ifstream archivo("proveedores.txt");
+	while (getline(archivo, linea)) {
 
-	    if (a == line.substr(0,10)) {
+	    if (buscar == linea.substr(0,10)) {
 	    	cout << "El registro fue encontrado, los datos son los siguientes:\n" << endl;
 	      
-	    	cout << "Pedido nro		: " << line.substr(0,10) << endl;
-			cout << "Codigo producto		: " << line.substr(10,10) << endl; 
-			cout << "Empresa			: " << line.substr(20,30) << endl;
-			cout << "Fecha de entrega	: " << line.substr(52,2) <<"/" << line.substr(54,2) << "/" << line.substr(56,4) << endl;
-			cout << "Stock			: " << line.substr(60,5) << endl;
+	    	cout << "Pedido nro		: " << linea.substr(0,10) << " <---------------" << endl;
+			cout << "Codigo producto		: " << linea.substr(10,10) << endl; 
+			cout << "Empresa			: " << linea.substr(20,30) << endl;
+			cout << "Fecha de entrega	: " << linea.substr(52,2) <<"/" << linea.substr(54,2) << "/" << linea.substr(56,4) << endl;
+			cout << "Stock			: " << linea.substr(60,5) << endl << endl;
 			
 	    	return 0;
 	    }
 	}
-	cout << "El registro no fue encontrado\n";
+	cout << "El registro no fue encontrado\n" << endl ;
 	return 0;
 }
 //metodo 2
-string Proveedor::validarProducto(){
-	string line;
-	ifstream indata("proveedores.txt");
-	while (getline(indata, line)) {
+/*aqui basicamente replico el metodo anterior pero ahora la coincidencia que estoy buscando es otra (codigo de producto),
+que comenzaria en la posicion 10 de la linea con una extension de 10 caracteres*/
+int Proveedor::validarProducto(){
+	string linea;
+	ifstream archivo("proveedores.txt");
+	while (getline(archivo, linea)) {
 
-	    if (a == line.substr(10,10)) {
-	    	cout << "El registro fue encontrado, los datos son los siguientes:\n" << endl;
+	    if (buscar == linea.substr(10,10)) {
+			cout << "El registro fue encontrado, los datos son los siguientes:\n" << endl;
 	      
-			cout << "Codigo producto		: " << line.substr(10,10) << endl; 
-	    	cout << "Pedido nro		: " << line.substr(0,10) << endl;
-			cout << "Empresa			: " << line.substr(20,30) << endl;
-			cout << "Fecha de entrega	: " << line.substr(52,2) <<"/" << line.substr(54,2) << "/" << line.substr(56,4) << endl;
-			cout << "Stock			: " << line.substr(60,5) << endl;
+	    	cout << "Pedido nro		: " << linea.substr(0,10) << endl;
+			cout << "Codigo producto		: " << linea.substr(10,10) << " <---------------" << endl;
+			cout << "Empresa			: " << linea.substr(20,30) << endl;
+			cout << "Fecha de entrega	: " << linea.substr(52,2) <<"/" << linea.substr(54,2) << "/" << linea.substr(56,4) << endl;
+			cout << "Stock			: " << linea.substr(60,5) << endl << endl;
 			
 	    	return 0;
 	    }
 	}
-	cout << "El registro no fue encontrado\n";
+	cout << "El registro no fue encontrado\n" << endl ;
 	return 0;
 }
 //metodo 3
-string Proveedor::validarFecha(){
-	string line;
-	ifstream indata("proveedores.txt");
-	while (getline(indata, line)) {
+/*en este mantengo o el mismo modus operandi pero con algunas diferencias, ya que para dejar mas estetica la fecha
+a la hora de mostrar una vez encontrada agrego los slash  y para lograr eso tuve que dividir la fecha en tres partes.
+Una de la posicion 52 con extension de dos para el dia, de la 54 con dos tambien y luego la 56 con una extesion de cuatro para el anio*/
+int Proveedor::validarFecha(){
+	string linea;
+	ifstream archivo("proveedores.txt");
+	while (getline(archivo, linea)) {
 
-	    if (a == line.substr(52,8)) {
+	    if (buscar == linea.substr(52,8)) {
 	    	cout << "El registro fue encontrado, los datos son los siguientes:\n" << endl;
 	      
-			cout << "Fecha de entrega	: " << line.substr(52,2) <<"/" << line.substr(54,2) << "/" << line.substr(56,4) << endl;
-	    	cout << "Pedido nro		: " << line.substr(0,10) << endl;
-			cout << "Codigo producto		: " << line.substr(10,10) << endl; 
-			cout << "Empresa			: " << line.substr(20,30) << endl;
-			cout << "Stock			: " << line.substr(60,5) << endl;
+	    	cout << "Pedido nro		: " << linea.substr(0,10) << endl;
+			cout << "Codigo producto		: " << linea.substr(10,10) << endl; 
+			cout << "Empresa			: " << linea.substr(20,30) << endl;
+			cout << "Fecha de entrega	: " << linea.substr(52,2) <<"/" << linea.substr(54,2) << "/" << linea.substr(56,4) << " <---------------" << endl;
+			cout << "Stock			: " << linea.substr(60,5) << endl << endl;
 			
 	    	return 0;
 	    }
 	}
-	cout << "El registro no fue encontrado\n";
+	cout << "El registro no fue encontrado\n" << endl;
 	return 0;
 }
 //menu
+/*aqui hago un menu sencillo que retorna un numero que necesitara mi funcion main para saber que metodo iniciar*/
 int menu(){
-	system("cls");
 	int opcion;
 	cout << "<<			Trabajo Individual Modulo 4			>>" << endl << endl;
-	cout << "1.- Buscar un pedido" << endl;
-	cout << "2.- Buscar un cod producto" << endl;
-	cout << "3.- Buscar por fecha" << endl;
+	
+	cout << "1.- Buscar un Nro de Pedido" << endl;
+	cout << "2.- Buscar un Cod de Producto" << endl;
+	cout << "3.- Buscar por Fecha" << endl;
 	cout << "4.- Salir" << endl << endl;
 	cout << "Digite una opcion: "; cin >> opcion;
+	cout << endl;
 	return opcion;
 }
 
 int main(){
-	ifstream indata("proveedores.txt");
-  	string line;
-  	string search;
-  	string a, b, c;
+	//inicio mis variables
+	/*la variable buscar tendra la palabra clave que quiere encontrar el usuario y las otras (a, b y c)
+	son para poder llamar a mis metodos segun sea necesario. La variable opcion es la que llama al menu y
+	luego obtiene el valor resultante que filtrara mi if para saber que metodo llamar*/
+  	string buscar, a, b , c;
   	int opcion;
+  	//llamo a mi menu
   	opcion = menu();
+  	//segun la opcion seleccionada trabajara mi if (probe con switch pero no me resulto :c)
+  	/*una vez filtrada la opcion elegida por el usuario el if ejecuta segun sea el caso el metodo necesario y crea
+	un objeto de la clase Proveedor con el atributo a buscar para luego llamar al metodo necesario*/
   	if(opcion==1){
-  		cout << "Buscar el pedido: ";
-  		cin >> search;
-  		cout << endl;
-  		Proveedor prov1 = Proveedor(search);
-  		a = prov1.validarPedido();
-  		cout << a << endl;
+  		cout << "Si el nro de pedido contiene letras" << endl << "Porfavor utilice mayusculas." << endl << endl;
+  		cout << "Buscar el nro de pedido: "; cin >> buscar; cout << endl;
+  		Proveedor prov1 = Proveedor(buscar);
+  		prov1.validarPedido();
 	  }else if(opcion == 2){
-	  	cout << "Buscar el codigo: ";
-  		cin >> search;
-  		cout << endl;
-  		Proveedor prov2 = Proveedor(search);
-  		b = prov2.validarProducto();
-  		cout << b << endl;
+	  	cout << "El codigo debe contener 10 numeros." << endl << "Si son menos debe completar con ceros." << endl << "ej: 0000012345." << endl << endl;
+	  	cout << "Buscar el codigo de producto: "; cin >> buscar; cout << endl;
+  		Proveedor prov1 = Proveedor(buscar);
+  		prov1.validarProducto();
 	  }else if(opcion == 3){
-	  	cout << "Buscar por la fecha: ";
-  		cin >> search;
-  		cout << endl;
-  		Proveedor prov3 = Proveedor(search);
-  		c = prov3.validarFecha();
-  		cout << c << endl;
+	  	cout << "Se solicita porfavor ingresar la fecha sin '/' ni '-'" << endl << "ej: ddmmyy." << endl << endl;
+	  	cout << "Buscar por la fecha: "; cin >> buscar; cout << endl;
+  		Proveedor prov1 = Proveedor(buscar);
+  		prov1.validarFecha();
 	  }else{
 	  	return 0;
 	  }
   	
-  	
-  	/*int op;
-  	
-  	do{
-	  	system("cls");
-	  	op = menu();
-	  	switch(op){
-	  			
-		  	case 1:
-	  			cout << "Buscar un pedido\n";
-  				cin >> search;
-  				Proveedor prov1 = Proveedor(search);
-  				a = prov1.validarPedido();
-  				cout << a << endl;	
-  			break;
-  			case 2:
-  				//cout << "Buscar un codigo\n";
-  				//cin >> search;
-  				//Proveedor prov2 = Proveedor(search);
-  				//b = prov2.validarProducto();
-  				//cout << b << endl;
-  			break;
-  			case 3:
-  				cout << "Buscar una fecha\n";
-  				cin >> search;
-  				//Proveedor prov3 = Proveedor(search);
-  				//c = prov3.validarFecha();
-  				//cout << c << endl;
-  			break;
-  			case 4:
-  				return 0;
-  			break;
-		}
-  	}while(op != 3);
-  	return 0;*/
-
-  	/*cout << "Buscar un pedido\n";
-  	cin >> search;
-  
-  	Proveedor prov1 = Proveedor(search);
-  	a = prov1.validarPedido();
-  	b = prov1.validarProducto();
-  	c = prov1.validarFecha();
-  
-  	cout << a << endl;
-  	cout << b << endl;
-  	cout << c << endl;*/
-
-	/*while (getline(indata, line)) {
-    	//istringstream aux(line);	
-    	string a, b;
-
-    //if (!(aux)) { break; }
-	
-    if (search == line.substr(0,10)) {
-      	cout << "El registro fue encontrado!\n";
-      	cout << a << endl << b << endl;
-    	cout << line;
-    	return 0;
-    	}
-  	}
-
-  	cout << "El registro no fue encontrado\n";*/
-
-  	//return 0;
+	//la buena practica xD
+	system("pause");
+  	return 0;
 }
